@@ -5,22 +5,23 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 
 class UserController extends Controller
 {
-	public function index() {}
-	
-	public function create(Request $request)
+	public function store(Request $request)
 	{
 		$data = $request->validate([
-				'username' => 'required',
-				'email' => 'required|email',
-				'password' => 'required',
+				'username' => ['required', 'min:6', 'max:12', Rule::unique('users', 'username')],
+				'email' => ['required', 'email', Rule::unique('users', 'email')],
+				'password' => ['required', 'min:6', 'max:12', 'confirmed'],
 		]);
 		
-		User::create($data);
+		$data['password'] = bcrypt($data['password']);
+		$user = User::create($data);
 		
-		return 'user create';
+		auth()->login($user);
+		return redirect('/')->with('success', 'You have been registered and logged in.');
 	}
 }
