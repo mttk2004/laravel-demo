@@ -8,17 +8,21 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
 	public function up(): void
 	{
-		Schema::create('posts', function (Blueprint $table) {
+		Schema::create('follows', function (Blueprint $table) {
 			$table->id();
-			$table->foreignId('users_id')->constrained()->onDelete('cascade');
-			$table->string('title');
-			$table->string('body');
+			
+			$table->foreignId('user_id')
+						->constrained()
+						->onDelete('cascade');
+			$table->foreignId('followed_user_id')
+						->constrained('users')
+						->onDelete('cascade');
 			$table->timestamps();
 		});
 	}
 	
 	public function down(): void
 	{
-		Schema::dropIfExists('posts');
+		Schema::dropIfExists('follows');
 	}
 };

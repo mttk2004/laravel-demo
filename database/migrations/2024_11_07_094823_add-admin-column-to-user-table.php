@@ -8,16 +8,15 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
 	public function up(): void
 	{
-		Schema::table('posts', function (Blueprint $table) {
-			// change the datatype of column `body` to longText
-			$table->longText('body')->change();
+		Schema::table('users', function (Blueprint $table) {
+			$table->boolean('is_admin')->default(false);
 		});
 	}
 	
 	public function down(): void
 	{
-		Schema::table('posts', function (Blueprint $table) {
-			//
+		Schema::table('users', function (Blueprint $table) {
+			$table->dropColumn('is_admin');
 		});
 	}
 };
