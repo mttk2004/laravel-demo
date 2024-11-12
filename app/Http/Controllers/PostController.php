@@ -12,18 +12,14 @@ class PostController extends Controller
 {
 	public function index()
 	{
-		$posts = Post::all();
+		$posts = Post::orderBy('created_at', 'desc')->paginate(5);
 		
 		return view('posts.index', compact('posts'));
 	}
 	
 	public function create()
 	{
-		if (auth()->check()) {
-			return view('posts.create');
-		} else {
-			return redirect('/login');
-		}
+		return view('posts.create');
 	}
 	
 	public function store(Request $request)
@@ -34,7 +30,7 @@ class PostController extends Controller
 		]);
 		
 		$data['title'] = strip_tags($data['title']);
-		$data['body'] = strip_tags($data['body']);
+		$data['body'] = nl2br(strip_tags($data['body']));
 		$data['user_id'] = auth()->id();
 		
 		$post = Post::create($data);
@@ -66,7 +62,7 @@ class PostController extends Controller
 		]);
 		
 		$data['title'] = strip_tags($data['title']);
-		$data['body'] = strip_tags($data['body']);
+		$data['body'] = strip_tags(nl2br(($data['body'])));
 		
 		$updatedPost = $post->update($data);
 		

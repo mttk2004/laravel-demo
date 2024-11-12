@@ -60,7 +60,7 @@ class Follow extends Model
 								 ->exists();
 	}
 	
-	public function follower()
+	public function follower(): BelongsTo
 	{
 		return $this->belongsTo(User::class, 'user_id');
 	}

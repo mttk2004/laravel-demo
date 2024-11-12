@@ -39,7 +39,8 @@
             style="width: 32px; height: 32px; border-radius: 16px"
             src="{{$post->user->avatar}}"
             alt="avatar" /></a>
-      Posted by <a href="/profile/{{$post->user->username}}">{{ $post->user->username }}</a> on {{
+      Posted by <a href="/profile/{{$post->user->username}}">
+        {{ $post->user->username }}</a> on {{
       $post->created_at->format
       ('d/m/y H:i') }}
     </p>

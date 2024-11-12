@@ -10,7 +10,13 @@ class SessionController extends Controller
 {
 	public function index()
 	{
-		return view(auth()->check() ? 'homepage-user' : 'homepage-guest');
+		if (!auth()->check()) {
+			return view('homepage-guest');
+		}
+		
+		$feedPosts = auth()->user()->feedPosts()->latest()->paginate(4);
+		
+		return view('homepage-user', compact('feedPosts'));
 	}
 	
 	public function store(Request $request)
@@ -38,6 +44,7 @@ class SessionController extends Controller
 	public function destroy()
 	{
 		auth()->logout();
+		
 		return redirect('/')->with('success', 'You have been logged out.');
 	}
 }
